@@ -1,4 +1,4 @@
-package types;
+package mua.types;
 
 public class MuaWord extends MuaType {
     String value;

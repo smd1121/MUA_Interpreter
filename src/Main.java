@@ -1,4 +1,6 @@
-import types.*;
+package mua;
+
+import mua.types.*;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;

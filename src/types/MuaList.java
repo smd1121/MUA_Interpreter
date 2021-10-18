@@ -1,4 +1,4 @@
-package types;
+package mua.types;
 
 public class MuaList extends MuaType {
     String value;

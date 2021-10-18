@@ -1,4 +1,4 @@
-package types;
+package mua.types;
 
 public class MuaNumber extends MuaType {
     double value;

@@ -1,5 +1,6 @@
-import types.MuaType;
+package mua;
 
+import mua.types.MuaType;
 import java.util.HashMap;
 import java.util.Map;
 
