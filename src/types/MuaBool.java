@@ -14,4 +14,9 @@ public class MuaBool extends MuaType {
     public void setValue(Boolean value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return Boolean.toString(value);
+    }
 }

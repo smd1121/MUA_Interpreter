@@ -1,4 +1,5 @@
 package types;
 
-public class MuaType {
+public abstract class MuaType {
+    public abstract String toString();
 }

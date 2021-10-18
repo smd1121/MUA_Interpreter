@@ -14,4 +14,9 @@ public class MuaNumber extends MuaType {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return Double.toString(value);
+    }
 }

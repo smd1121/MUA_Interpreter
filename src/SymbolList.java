@@ -14,7 +14,7 @@ public class SymbolList {
     }
 
     /*
-     * @return NULL if no corresponding item.
+     * @return NULL if there is no corresponding item.
      */
     public MuaType find(String str) {
         return list.get(str);
