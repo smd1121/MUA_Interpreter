@@ -3,8 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="a59f10ce-5167-48e9-b0f7-07d662b969de" name="默认更改列表" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MUA/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SymbolList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/SymbolList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaBool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MuaWord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaWord.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,11 +92,23 @@
       <option name="presentableId" value="Default" />
       <updated>1634537485396</updated>
       <workItem from="1634537488422" duration="16638000" />
+      <workItem from="1634575566982" duration="722000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
