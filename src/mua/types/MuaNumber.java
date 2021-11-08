@@ -1,5 +1,7 @@
 package mua.types;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MuaNumber extends MuaType {
     double value;
 
@@ -19,4 +21,9 @@ public class MuaNumber extends MuaType {
     public String toString() {
         return Double.toString(value);
     }
+
+    @NotNull
+    public MuaType makeCopy() {
+        return new MuaNumber(value);
+    };
 }
