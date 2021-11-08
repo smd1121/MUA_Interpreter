@@ -290,8 +290,8 @@ public class Main {
                         list = list + ' ' + scanner.next();
                     }
                     MuaList val = new MuaList(list);
-                    if (((MuaList) val).getListType() == MuaList.ListType.MUA_FUNC && localSymbolList != null) {
-                        muaSaveContext((MuaList) val);
+                    if (val.getListType() == MuaList.ListType.MUA_FUNC && localSymbolList != null) {
+                        muaSaveContext(val);
                     }
                     return val;
                 }
@@ -308,8 +308,7 @@ public class Main {
                 }
                 else if (Character.isLetter(firstCh) || firstCh == '_') {   // <name>
                     if (isNameFuncCall) {
-                        // TODO 4: Function Call
-                        MuaType func = muaGetSymbol(first, symbolTbl.MUA_LOCAL);
+                        MuaType func = muaGetSymbol(first);
                         if (!(func instanceof MuaList) || ((MuaList) func).getListType() != MuaList.ListType.MUA_FUNC)
                             return errorAndExit(first + " doesn't name a function.");
                         return muaCallFunc((MuaList) func);
@@ -356,11 +355,8 @@ public class Main {
 
         SymbolList symbolList = new SymbolList();
         for (String name : contextList) {
-            MuaType val = muaGetSymbol(name, symbolTbl.MUA_LOCAL);
-            if (val == null) {
-                //errorAndExit("Name " + name + " not found.");
-            }
-            else {
+            MuaType val = muaGetSymbol(name);
+            if (val != null) {
                 symbolList.put(name, val.makeCopy());
             }
         }
@@ -374,7 +370,7 @@ public class Main {
     @NotNull
     private static MuaType muaThing(String first) {
         MuaType name = muaExpression(first, false);
-        MuaType result = muaGetSymbol(name.toString(), symbolTbl.MUA_LOCAL);
+        MuaType result = muaGetSymbol(name.toString());
         if (result == null) {
             return errorAndExit("Name " + name.toString() + " not found.");
         }
@@ -464,7 +460,7 @@ public class Main {
 
     private static Boolean isExistingMuaName() {
         String name = muaExpression(null, true).toString();
-        return muaGetSymbol(name, symbolTbl.MUA_LOCAL) != null;
+        return muaGetSymbol(name) != null;
     }
 
     private static Boolean muaCompare(String op, double val1, double val2) {
@@ -501,12 +497,7 @@ public class Main {
         }
     }
 
-    private static MuaType muaGetSymbol(String name, symbolTbl startTbl) {
-        //System.out.println("Looking for " + name);
-
-        if (startTbl == symbolTbl.MUA_GLOBAL)
-            return globalSymbolList.find(name);
-
+    private static MuaType muaGetSymbol(String name) {
         MuaType result = null;
         if (localSymbolList != null)
             result = localSymbolList.find(name);
