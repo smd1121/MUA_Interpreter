@@ -58,14 +58,6 @@ public class MuaList extends MuaType {
         return listType;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     @Override
     public String toString() {
         return value;
@@ -74,7 +66,7 @@ public class MuaList extends MuaType {
     @NotNull
     public MuaType makeCopy() {
         return new MuaList(value, listType, func_code, paramList, context);
-    };
+    }
 
     /**
      * @return
@@ -115,7 +107,7 @@ public class MuaList extends MuaType {
     public Vector<String> getContextList() {
         Pattern pattern = Pattern.compile(":([^\\s\\[\\]:]+)|(\\s*thing\\s+)+([^\\s\\[\\]:]+)");
         Matcher matcher = pattern.matcher(func_code);
-        Vector<String> contextList = new Vector<String>();
+        Vector<String> contextList = new Vector<>();
         while (matcher.find()) {
             if (matcher.group(1) != null)
                 contextList.add(matcher.group(1));

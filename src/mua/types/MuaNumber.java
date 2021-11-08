@@ -13,10 +13,6 @@ public class MuaNumber extends MuaType {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     @Override
     public String toString() {
         return Double.toString(value);
@@ -25,5 +21,5 @@ public class MuaNumber extends MuaType {
     @NotNull
     public MuaType makeCopy() {
         return new MuaNumber(value);
-    };
+    }
 }

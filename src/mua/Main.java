@@ -3,7 +3,6 @@ package mua;
 import mua.types.*;
 import org.jetbrains.annotations.NotNull;
 
-import javax.management.loading.MLet;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -33,7 +32,7 @@ public class Main {
      * Get the whole MUA program.
      */
     private static MuaType muaProgram() {
-        MuaType result = null, lastResult = null;
+        MuaType result, lastResult = null;
         while (true) {
             result = muaSentence();
             if (result == null)
@@ -89,7 +88,7 @@ public class Main {
             case "run": {
                 MuaType val = muaExpression(null, true);
                 if (val instanceof MuaList) {
-                    return muaRun(getMuaListContent((MuaList) val), false);
+                    return muaRun(getMuaListContent((MuaList) val));
                 }
                 else
                     return errorAndExit("Invalid operand for run.");
@@ -101,14 +100,20 @@ public class Main {
                 MuaBool parsedCond = muaParseBool(condition);
                 if (parsedCond == null || !(ifTrue instanceof MuaList) || !(ifFalse instanceof MuaList))
                     return errorAndExit("Invalid operand for if.");
-                if (parsedCond.getValue())
-                    return muaRun(getMuaListContent((MuaList) ifTrue), false);
-                else
-                    return muaRun(getMuaListContent((MuaList) ifFalse), false);
+                MuaList toRun = (MuaList)(parsedCond.getValue() ? ifTrue : ifFalse);
+                if (toRun.getListType() == MuaList.ListType.MUA_EMPTY_LIST)
+                    return toRun;
+
+                String toRunContent = getMuaListContent(toRun);
+                if (toRun.getListType() == MuaList.ListType.MUA_SINGLE_ITEM_LIST)
+                    return new MuaWord(toRunContent.trim());
+
+                return muaRun(toRunContent);
             }
             case "return": {
+                MuaType result = muaExpression(null, true);
                 returnCalled = true;
-                return muaExpression(null, true);
+                return result;
             }
             case "export": {
                 MuaType name = muaExpression(null, true);
@@ -217,7 +222,7 @@ public class Main {
                 return errorAndExit("Invalid operand for isempty.");
             }
             case "isname": {
-                return new MuaBool(isExistingMuaName(null));
+                return new MuaBool(isExistingMuaName());
             }
             case "not": {
                 MuaType opr = muaExpression(null, true);
@@ -297,7 +302,7 @@ public class Main {
                         return errorAndExit("Invalid input: " + first + ".");
                     }
                 }
-                else if (Character.isLetter(firstCh)) {   // <name>
+                else if (Character.isLetter(firstCh) || firstCh == '_') {   // <name>
                     if (isNameFuncCall) {
                         // TODO 4: Function Call
                         MuaType func = muaGetSymbol(first, symbolTbl.MUA_LOCAL);
@@ -365,15 +370,11 @@ public class Main {
     @NotNull
     private static MuaType muaThing(String first) {
         MuaType name = muaExpression(first, false);
-        if (isValidMuaName(name)) {
-            MuaType result = muaGetSymbol(name.toString(), symbolTbl.MUA_LOCAL);
-            if (result == null) {
-                return errorAndExit("Name " + name.toString() + " not found.");
-            }
-            return result;
-        } else {
-            return errorAndExit("[Error] Invalid <name> for operation thing.");
+        MuaType result = muaGetSymbol(name.toString(), symbolTbl.MUA_LOCAL);
+        if (result == null) {
+            return errorAndExit("Name " + name.toString() + " not found.");
         }
+        return result;
     }
 
     @NotNull
@@ -457,10 +458,8 @@ public class Main {
                 && Pattern.matches("[a-zA-Z][a-zA-Z0-9_]*", obj.toString()));
     }
 
-    private static Boolean isExistingMuaName(String name) {
-        if (name == null) {
-            name = muaExpression(null, true).toString();
-        }
+    private static Boolean isExistingMuaName() {
+        String name = muaExpression(null, true).toString();
         return muaGetSymbol(name, symbolTbl.MUA_LOCAL) != null;
     }
 
@@ -499,16 +498,20 @@ public class Main {
     }
 
     private static MuaType muaGetSymbol(String name, symbolTbl startTbl) {
+        //System.out.println("Looking for " + name);
+
         if (startTbl == symbolTbl.MUA_GLOBAL)
             return globalSymbolList.find(name);
 
         MuaType result = null;
         if (localSymbolList != null)
             result = localSymbolList.find(name);
+        //System.out.print(">> " + (result == null ? null : result.toString()));
         if (result == null && contextSymbolList != null)
             result = contextSymbolList.find(name);
         if (result == null)
             result = globalSymbolList.find(name);
+        //System.out.println(">> " + (result == null ? null : result.toString()));
         return result;
     }
 
@@ -523,22 +526,14 @@ public class Main {
         return result;
     }
 
-    private static MuaType muaRun(String code, boolean hasCreatedLocalTbl) {
+    private static MuaType muaRun(String code) {
         Scanner oldScanner = scanner;
         scanner = new Scanner(code);
+
         MuaType result;
+        result = muaProgram();
 
-        if (!hasCreatedLocalTbl) {
-            SymbolList oldLocalTbl = localSymbolList;
-            localSymbolList = new SymbolList();
-            result = muaProgram();
-            localSymbolList = oldLocalTbl;
-        }
-        else {
-            result = muaProgram();
-        }
         scanner = oldScanner;
-
         return result;
     }
 
@@ -585,15 +580,17 @@ public class Main {
     @NotNull
     private static MuaType muaCallFunc(MuaList func) {
         SymbolList oldLocalTbl = localSymbolList;
-        localSymbolList = new SymbolList();
+        SymbolList newLocalTbl = new SymbolList();
         for (String name : func.getParamList()) {
             MuaType val = muaExpression(null, true);
-            muaAddSymbol(name, val, symbolTbl.MUA_LOCAL);
+            newLocalTbl.put(name, val);
+            //muaAddSymbol(name, val, symbolTbl.MUA_LOCAL);
         }
+        localSymbolList = newLocalTbl;
 
         contextSymbolList = func.getContext();
 
-        MuaType result = muaRun(func.getFunc_code(), true);
+        MuaType result = muaRun(func.getFunc_code());
 
         contextSymbolList = null;
         localSymbolList = oldLocalTbl;
