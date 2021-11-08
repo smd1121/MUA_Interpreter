@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a59f10ce-5167-48e9-b0f7-07d662b969de" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/hack.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mua/types/MuaException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/SymbolList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaBool.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaFunction.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaNumber.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MUA/types/MuaWord.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mua/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/SymbolList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/SymbolList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaBool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaNumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/types/MuaWord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/types/MuaWord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/~$NF_of_MUA_V1.3.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/问题.txt" beforeDir="false" afterPath="$PROJECT_DIR$/问题.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +102,7 @@
       <workItem from="1634537488422" duration="16638000" />
       <workItem from="1634575566982" duration="722000" />
       <workItem from="1634976950568" duration="890000" />
-      <workItem from="1636204654572" duration="25345000" />
+      <workItem from="1636204654572" duration="27729000" />
     </task>
     <servers />
   </component>
@@ -158,38 +138,38 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="520" y="272" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.834@0.0.1536.834" timestamp="1636204856837" />
-    <state width="1493" height="149" key="GridCell.Tab.0.bottom" timestamp="1636370845388">
+    <state width="1493" height="149" key="GridCell.Tab.0.bottom" timestamp="1636374707962">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="149" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1636370845388" />
-    <state width="1493" height="149" key="GridCell.Tab.0.center" timestamp="1636370845387">
+    <state width="1493" height="149" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1636374707962" />
+    <state width="1493" height="149" key="GridCell.Tab.0.center" timestamp="1636374707962">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="149" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1636370845387" />
-    <state width="1493" height="149" key="GridCell.Tab.0.left" timestamp="1636370845387">
+    <state width="1493" height="149" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1636374707962" />
+    <state width="1493" height="149" key="GridCell.Tab.0.left" timestamp="1636374707962">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="149" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1636370845387" />
-    <state width="1493" height="149" key="GridCell.Tab.0.right" timestamp="1636370845387">
+    <state width="1493" height="149" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1636374707962" />
+    <state width="1493" height="149" key="GridCell.Tab.0.right" timestamp="1636374707962">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="149" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1636370845387" />
-    <state width="1493" height="213" key="GridCell.Tab.1.bottom" timestamp="1636370692809">
+    <state width="1493" height="149" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1636374707962" />
+    <state width="1493" height="213" key="GridCell.Tab.1.bottom" timestamp="1636373037419">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="213" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1636370692809" />
-    <state width="1493" height="213" key="GridCell.Tab.1.center" timestamp="1636370692809">
+    <state width="1493" height="213" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1636373037419" />
+    <state width="1493" height="213" key="GridCell.Tab.1.center" timestamp="1636373037419">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="213" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1636370692809" />
-    <state width="1493" height="213" key="GridCell.Tab.1.left" timestamp="1636370692809">
+    <state width="1493" height="213" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1636373037419" />
+    <state width="1493" height="213" key="GridCell.Tab.1.left" timestamp="1636373037419">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="213" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1636370692809" />
-    <state width="1493" height="213" key="GridCell.Tab.1.right" timestamp="1636370692809">
+    <state width="1493" height="213" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1636373037419" />
+    <state width="1493" height="213" key="GridCell.Tab.1.right" timestamp="1636373037419">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="213" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1636370692809" />
+    <state width="1493" height="213" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1636373037419" />
     <state x="270" y="59" key="SettingsEditor" timestamp="1634544007424">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
@@ -202,6 +182,10 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="321" y="153" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.834@0.0.1536.834" timestamp="1636370424606" />
+    <state x="425" y="189" key="run.anything.popup" timestamp="1636374683483">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="425" y="189" key="run.anything.popup/0.0.1536.834@0.0.1536.834" timestamp="1636374683483" />
     <state x="815" y="154" width="672" height="678" key="search.everywhere.popup" timestamp="1634542146783">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
@@ -212,7 +196,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/mua/Main.java</url>
-          <line>516</line>
+          <line>526</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

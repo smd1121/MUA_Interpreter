@@ -189,7 +189,12 @@ public class Main {
             }
             case "isnumber": {
                 MuaType opr = muaExpression(null, true);
-                return new MuaBool(opr instanceof MuaNumber);
+                try {
+                    Double.parseDouble(opr.toString());
+                } catch (Exception e) {
+                    return new MuaBool(false);
+                }
+                return new MuaBool(true);
             }
             case "isword": {
                 MuaType opr = muaExpression(null, true);
@@ -201,10 +206,15 @@ public class Main {
             }
             case "isbool": {
                 MuaType opr = muaExpression(null, true);
-                return new MuaBool(opr instanceof MuaBool);
+                return new MuaBool(muaParseBool(opr) != null);
             }
             case "isempty": {
-                break;
+                MuaType val = muaExpression(null, true);
+                if (val instanceof MuaList)
+                    return new MuaBool(((MuaList) val).getListType() == MuaList.ListType.MUA_EMPTY_LIST);
+                if (val instanceof MuaWord)
+                    return new MuaBool(((MuaWord) val).getValue().isEmpty());
+                return errorAndExit("Invalid operand for isempty.");
             }
             case "isname": {
                 return new MuaBool(isExistingMuaName(null));
