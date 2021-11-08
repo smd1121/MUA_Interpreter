@@ -289,7 +289,11 @@ public class Main {
                             return errorAndExit("Wrong list format.");
                         list = list + ' ' + scanner.next();
                     }
-                    return new MuaList(list);
+                    MuaList val = new MuaList(list);
+                    if (((MuaList) val).getListType() == MuaList.ListType.MUA_FUNC && localSymbolList != null) {
+                        muaSaveContext((MuaList) val);
+                    }
+                    return val;
                 }
                 else if (firstCh == '"') {    // <word>
                     return new MuaWord(first.substring(1));
@@ -307,7 +311,7 @@ public class Main {
                         // TODO 4: Function Call
                         MuaType func = muaGetSymbol(first, symbolTbl.MUA_LOCAL);
                         if (!(func instanceof MuaList) || ((MuaList) func).getListType() != MuaList.ListType.MUA_FUNC)
-                            return errorAndExit(first + "doesn't name a function.");
+                            return errorAndExit(first + " doesn't name a function.");
                         return muaCallFunc((MuaList) func);
                     } else {
                         return new MuaWord(first);
@@ -352,9 +356,9 @@ public class Main {
 
         SymbolList symbolList = new SymbolList();
         for (String name : contextList) {
-            MuaType val = muaGetSymbol(name, symbolTbl.MUA_GLOBAL);
+            MuaType val = muaGetSymbol(name, symbolTbl.MUA_LOCAL);
             if (val == null) {
-                errorAndExit("Name " + name + " not found.");
+                //errorAndExit("Name " + name + " not found.");
             }
             else {
                 symbolList.put(name, val.makeCopy());

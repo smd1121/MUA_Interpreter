@@ -105,14 +105,16 @@ public class MuaList extends MuaType {
 
     // for closure:
     public Vector<String> getContextList() {
-        Pattern pattern = Pattern.compile(":([^\\s\\[\\]:]+)|(\\s*thing\\s+)+([^\\s\\[\\]:]+)");
+        Pattern pattern = Pattern.compile(":([^\\s\\[\\]:]+)|(\\s*thing\\s+)+([^\\s\\[\\]:]+)|([a-zA-Z0-9_]+)");
         Matcher matcher = pattern.matcher(func_code);
         Vector<String> contextList = new Vector<>();
         while (matcher.find()) {
             if (matcher.group(1) != null)
                 contextList.add(matcher.group(1));
-            else
+            else if (matcher.group(3) != null)
                 contextList.add(matcher.group(3));
+            else
+                contextList.add(matcher.group(4));
         }
         if (contextList.isEmpty())
             return null;
