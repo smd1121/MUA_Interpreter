@@ -1,0 +1,105 @@
+make "f [[x] [
+  make "g [[y] [return add :x :y]]
+  return g 42
+]]
+print f 233
+
+make "f1 [[x] [
+  make "g1 [[y] [return add :x :y]]
+  return :g1
+]]
+make "c1 f1 42
+make "c2 f1 24
+print c1 1
+print c2 2
+
+
+make "curry_two [[f x] [
+  return [[y] [return f :x :y]]
+]]
+make "f2 [[x y] [
+  return add :x :y
+]]
+make "f3 curry_two :f2 42
+print f3 233
+
+make "fact_base [
+    [rec x]
+    [
+        if eq :x 0
+        [return 1]
+        [return mul :x rec :rec sub :x 1]
+    ]
+]
+
+make "fact_simple [
+    [x]
+    [return fact_base :fact_base :x]
+]
+
+print fact_simple 5
+
+make "fact_nice [
+    [rec]
+    [
+        make "g [
+            [x]
+            [
+                if eq :x 0
+                [return 1]
+                [
+					make "temp rec :rec
+					return mul :x temp sub :x 1
+				]
+            ]
+        ]
+        return :g
+    ]
+]
+
+make "fact_curry fact_nice :fact_nice
+print fact_curry 5
+
+支持 f 1 2 这种调用：即支持 f(1)(2) ==> k(2)
+make "g f 1
+print g 2
+1) g = f(1)
+   print(g(2))
+2) g = f(1)(print(g(2)) ==> k(print(g(2))
+
+
+
+make "fact_nicer [
+    [rec]
+    [
+        make "g [
+            [x]
+            [
+                if eq :x 0
+                [return 1]
+                [return mul :x rec sub :x 1]
+            ]
+        ]
+        return :g
+    ]
+]
+
+make "z_comb [
+    [g]
+    [
+        make "t [
+            [r]
+            [
+                make "y [
+                    [yy]
+                    [return r :r :yy]
+                ]
+                return g :y
+            ]
+        ]
+        return t :t
+    ]
+]
+
+make "fact_z z_comb :fact_nicer
+print fact_z 5

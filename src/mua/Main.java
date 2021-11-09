@@ -4,6 +4,7 @@ import mua.types.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,11 +13,12 @@ public class Main {
     private static Scanner scanner;
     private static SymbolList globalSymbolList;
     private static SymbolList localSymbolList;
-    private static SymbolList contextSymbolList;
+    private static Stack<SymbolList> contextSymbolListStack;
 
     public static void main(String[] args) {
         scanner = new Scanner(System.in);
         globalSymbolList = new SymbolList();
+        contextSymbolListStack = new Stack<>();
         muaProgram();
     }
 
@@ -310,7 +312,7 @@ public class Main {
                     if (isNameFuncCall) {
                         MuaType func = muaGetSymbol(first);
                         if (!(func instanceof MuaList) || ((MuaList) func).getListType() != MuaList.ListType.MUA_FUNC)
-                            return errorAndExit(first + " doesn't name a function.");
+                            return errorAndExit(first + " = " + (func == null ? null : func.toString()) + " doesn't name a function.");
                         return muaCallFunc((MuaList) func);
                     } else {
                         return new MuaWord(first);
@@ -353,12 +355,14 @@ public class Main {
         if (contextList == null)
             return;
 
+        //System.out.println("Add context to " + func.toString());
         SymbolList symbolList = new SymbolList();
         for (String name : contextList) {
             MuaType val = muaGetSymbol(name);
             if (val != null) {
                 symbolList.put(name, val.makeCopy());
             }
+            //System.out.println(name + " <=> " + (val == null ? null : val.toString()));
         }
 
         func.setContext(symbolList);
@@ -426,7 +430,7 @@ public class Main {
                 }
             }
         } else {
-            errorAndExit("Operands of " + op + " are not numbers.");
+            errorAndExit("Operands of " + op + "(" +  opr1.toString() + ", " + opr2.toString() + ") are not numbers.");
             return new MuaNumber(Double.NaN);
         }
     }
@@ -502,8 +506,13 @@ public class Main {
         if (localSymbolList != null)
             result = localSymbolList.find(name);
         //System.out.print(">> " + (result == null ? null : result.toString()));
-        if (result == null && contextSymbolList != null)
-            result = contextSymbolList.find(name);
+        if (result == null && !contextSymbolListStack.empty()) {
+            for (SymbolList contextSymbolList : contextSymbolListStack) {
+                result = contextSymbolList.find(name);
+                if (result != null)
+                    break;
+            }
+        }
         if (result == null)
             result = globalSymbolList.find(name);
         //System.out.println(">> " + (result == null ? null : result.toString()));
@@ -511,11 +520,10 @@ public class Main {
     }
 
     private static MuaType muaRemoveSymbol(String name) {
+        // TODO: confirm semantics
         MuaType result = null;
         if (localSymbolList != null)
             result = localSymbolList.remove(name);
-        if (result == null && contextSymbolList != null)
-            result = contextSymbolList.remove(name);
         if (result == null)
             result = globalSymbolList.remove(name);
         return result;
@@ -583,11 +591,19 @@ public class Main {
         }
         localSymbolList = newLocalTbl;
 
-        contextSymbolList = func.getContext();
+        if (func.getContext() != null)
+            contextSymbolListStack.push(func.getContext());
 
+        // TODO [!]
         MuaType result = muaRun(func.getFunc_code());
 
-        contextSymbolList = null;
+        /*if (result instanceof MuaList
+                && ((MuaList) result).getListType() == MuaList.ListType.MUA_FUNC
+                && ((MuaList) result).getParamList().length > 0)
+            muaCallFunc((MuaList) result);*/
+
+        if (func.getContext() != null)
+            contextSymbolListStack.pop();
         localSymbolList = oldLocalTbl;
 
         return result;
