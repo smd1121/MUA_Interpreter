@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a59f10ce-5167-48e9-b0f7-07d662b969de" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/P3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mua/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mua/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +47,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Application.Main (1)">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -104,7 +103,8 @@
       <workItem from="1634575566982" duration="722000" />
       <workItem from="1634976950568" duration="890000" />
       <workItem from="1636204654572" duration="36212000" />
-      <workItem from="1636437230776" duration="6572000" />
+      <workItem from="1636437230776" duration="6857000" />
+      <workItem from="1636446171821" duration="348000" />
     </task>
     <servers />
   </component>
@@ -176,10 +176,10 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="205" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1636445664556" />
-    <state x="270" y="59" key="SettingsEditor" timestamp="1634544007424">
+    <state x="270" y="59" key="SettingsEditor" timestamp="1636446092412">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="270" y="59" key="SettingsEditor/0.0.1536.834@0.0.1536.834" timestamp="1634544007424" />
+    <state x="270" y="59" key="SettingsEditor/0.0.1536.834@0.0.1536.834" timestamp="1636446092412" />
     <state x="869" y="311" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1634540477342">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
