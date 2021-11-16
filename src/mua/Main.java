@@ -537,7 +537,7 @@ public class Main {
         result = muaProgram();
 
         scanner = oldScanner;
-        return result;
+        return result == null ? new MuaVoid() : result;
     }
 
     /**
@@ -585,6 +585,8 @@ public class Main {
         SymbolList oldLocalTbl = localSymbolList;
         SymbolList newLocalTbl = new SymbolList();
         for (String name : func.getParamList()) {
+            if (name.isEmpty() || name.isBlank())
+                continue;
             MuaType val = muaExpression(null, true);
             newLocalTbl.put(name, val);
             //muaAddSymbol(name, val, symbolTbl.MUA_LOCAL);
