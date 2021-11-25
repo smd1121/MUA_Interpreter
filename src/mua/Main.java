@@ -24,8 +24,12 @@ public class Main {
 
     @NotNull
     public static MuaException errorAndExit(String msg) {
-        System.out.println(msg);
-        System.out.println("Program terminated.");
+        System.out.println("[Error] " + msg);
+        System.out.println("Next several operations:");
+        for (int i = 0; i < 5 && scanner.hasNext(); i++) {
+            System.out.print("\t" + scanner.next());
+        }
+        System.out.println("\nProgram terminated.");
         System.exit(1);
         return new MuaException();
     }
@@ -73,6 +77,9 @@ public class Main {
             first = scanner.next();
         }
         switch (first) {
+            case "___DEBUG___": {
+                return new MuaVoid();
+            }
             case "make": {
                 return muaMake();
             }
@@ -446,7 +453,7 @@ public class Main {
     }
 
     /**
-     * @Return The number of char "ch" in String "str"
+     * @return The number of char "ch" in String "str"
      */
     private static int countCharInString(char ch, String str) {
         int count = 0;
