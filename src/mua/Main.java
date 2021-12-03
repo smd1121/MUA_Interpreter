@@ -512,17 +512,14 @@ public class Main {
         MuaType result = null;
         if (localSymbolList != null)
             result = localSymbolList.find(name);
-        //System.out.print(">> " + (result == null ? null : result.toString()));
         if (result == null && !contextSymbolListStack.empty()) {
             for (SymbolList contextSymbolList : contextSymbolListStack) {
-                result = contextSymbolList.find(name);
-                if (result != null)
-                    break;
+                MuaType tempResult = contextSymbolList.find(name);
+                if (tempResult != null) result = tempResult;
             }
         }
         if (result == null)
             result = globalSymbolList.find(name);
-        //System.out.println(">> " + (result == null ? null : result.toString()));
         return result;
     }
 
