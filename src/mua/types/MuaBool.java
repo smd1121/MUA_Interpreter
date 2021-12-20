@@ -1,6 +1,6 @@
 package mua.types;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 public class MuaBool extends MuaType {
     Boolean value;
@@ -18,7 +18,7 @@ public class MuaBool extends MuaType {
         return Boolean.toString(value);
     }
 
-    @NotNull
+    //@NotNull
     public MuaType makeCopy() {
         return new MuaBool(value);
     }

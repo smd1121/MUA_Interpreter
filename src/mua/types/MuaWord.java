@@ -1,6 +1,6 @@
 package mua.types;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 public class MuaWord extends MuaType {
     String value;
@@ -18,7 +18,7 @@ public class MuaWord extends MuaType {
         return value;
     }
 
-    @NotNull
+    //@NotNull
     public MuaType makeCopy() {
         return new MuaWord(value);
     }

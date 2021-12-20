@@ -1,7 +1,7 @@
 package mua.types;
 
 import mua.SymbolList;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -74,7 +74,7 @@ public class MuaList extends MuaType {
         }
     }
 
-    @NotNull
+    //@NotNull
     public MuaType makeCopy() {
         return new MuaList(value, listType, func_code, paramList, context);
     }

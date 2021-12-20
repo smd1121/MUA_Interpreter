@@ -1,9 +1,9 @@
 package mua.types;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 public abstract class MuaType {
     public abstract String toString();
-    @NotNull
+    //@NotNull
     public abstract MuaType makeCopy();
 }

@@ -1,6 +1,6 @@
 package mua.types;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 public class MuaVoid extends MuaType {
     public void getValue() {}
@@ -8,7 +8,7 @@ public class MuaVoid extends MuaType {
     @Override
     public String toString() { return null; }
 
-    @NotNull
+    //@NotNull
     public MuaType makeCopy() {
         return this;
     }

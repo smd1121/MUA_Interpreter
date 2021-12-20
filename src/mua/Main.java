@@ -1,7 +1,7 @@
 package mua;
 
 import mua.types.*;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.Scanner;
@@ -28,7 +28,7 @@ public class Main {
         muaProgram();
     }
 
-    @NotNull
+    //@NotNull
     public static MuaException errorAndExit(String msg) {
         System.out.println("[Error] " + msg);
         System.out.println("Next several operations:");
@@ -74,7 +74,7 @@ public class Main {
      *           Normally, it should be true.
      * @return The return value of the expression.
      */
-    @NotNull
+    //@NotNull
     private static MuaType muaExpression(String first, Boolean isNameFuncCall) {
         if (first == null) {
             if (!scanner.hasNext())
@@ -376,7 +376,7 @@ public class Main {
      * make <name> <value> (with "make" read)
      * @return <value>
      */
-    @NotNull
+    //@NotNull
     private static MuaType muaMake() {
         MuaType name = muaExpression(null, true);
         MuaType val = muaExpression(null, true);
@@ -413,7 +413,7 @@ public class Main {
         func.setContext(symbolList);
     }
 
-    @NotNull
+    //@NotNull
     private static MuaType muaReadList() {
         // TODO f: read in run
         String content;
@@ -427,7 +427,7 @@ public class Main {
     /**
      *
      */
-    @NotNull
+    //@NotNull
     private static MuaType muaThing(String first) {
         MuaType name = muaExpression(first, false);
         MuaType result = muaGetSymbol(name.toString());
@@ -437,7 +437,7 @@ public class Main {
         return result;
     }
 
-    @NotNull
+    //@NotNull
     private static MuaNumber muaBinaryOperation(String op) {
         MuaType opr1 = muaExpression(null, true);
         MuaType opr2 = muaExpression(null, true);
@@ -491,7 +491,7 @@ public class Main {
         }
     }
 
-    @NotNull
+    //@NotNull
     private static MuaType muaErase() {
         MuaType name = muaExpression(null, true);
         MuaType result = muaRemoveSymbol(name.toString());
@@ -725,7 +725,7 @@ public class Main {
         return true;
     }
 
-    @NotNull
+    //@NotNull
     private static String getMuaListContent(MuaList val) {
         Pattern pattern = Pattern.compile("\\s*\\[(.*)]\\s*");
         Matcher matcher = pattern.matcher(val.toString());
@@ -734,7 +734,7 @@ public class Main {
         return matcher.group(1);
     }
 
-    @NotNull
+    //@NotNull
     private static MuaType muaCallFunc(MuaList func) {
         SymbolList oldLocalTbl = localSymbolList;
         SymbolList newLocalTbl = new SymbolList();
