@@ -3,11 +3,14 @@ package mua;
 import mua.types.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static mua.types.MuaList.ListType.MUA_EMPTY_LIST;
 
 public class Main {
     private static Scanner scanner;
@@ -19,6 +22,9 @@ public class Main {
         scanner = new Scanner(System.in);
         globalSymbolList = new SymbolList();
         contextSymbolListStack = new Stack<>();
+
+        globalSymbolList.put("pi", new MuaNumber(3.14159));
+
         muaProgram();
     }
 
@@ -68,7 +74,6 @@ public class Main {
      *           Normally, it should be true.
      * @return The return value of the expression.
      */
-    @SuppressWarnings("DuplicateBranchesInSwitch")
     @NotNull
     private static MuaType muaExpression(String first, Boolean isNameFuncCall) {
         if (first == null) {
@@ -88,7 +93,10 @@ public class Main {
             }
             case "print": {
                 MuaType val = muaExpression(null, true);
-                System.out.println(val.toString());
+                if (val instanceof MuaList)
+                    System.out.println(((MuaList) val).toStringForPrint());
+                else
+                    System.out.println(val.toString());
                 return val;
             }
             case "erase": {
@@ -110,7 +118,7 @@ public class Main {
                 if (parsedCond == null || !(ifTrue instanceof MuaList) || !(ifFalse instanceof MuaList))
                     return errorAndExit("Invalid operand for if.");
                 MuaList toRun = (MuaList)(parsedCond.getValue() ? ifTrue : ifFalse);
-                if (toRun.getListType() == MuaList.ListType.MUA_EMPTY_LIST)
+                if (toRun.getListType() == MUA_EMPTY_LIST)
                     return toRun;
 
                 String toRunContent = getMuaListContent(toRun);
@@ -126,6 +134,8 @@ public class Main {
             }
             case "export": {
                 MuaType name = muaExpression(null, true);
+                if (localSymbolList == null)
+                    return errorAndExit("Invalid usage for export.");
                 MuaType val = localSymbolList.find(name.toString());
                 if (val == null)
                     return errorAndExit("Local variable " + name.toString() + " not found.");
@@ -162,6 +172,7 @@ public class Main {
             }
             case "read": {
                 String str;
+                // TODO f: read in run may cause error
                 if (scanner.hasNext())
                     str = scanner.next();
                 else
@@ -171,20 +182,24 @@ public class Main {
                 return new MuaWord(str);
             }
             case "load": {
-                // TODO: load
-                break;
+                MuaType fileName = muaExpression(null, true);
+                return muaLoad(fileName.toString());
             }
             case "erall": {
-                // TODO: erall
-                break;
+                // TODO f: erall for context
+                globalSymbolList.clear();
+                if (localSymbolList != null)
+                   localSymbolList.clear();
+                return new MuaBool(true);
             }
             case "eq":
             case "gt":
             case "lt": {
                 MuaType opr1 = muaExpression(null, true);
                 MuaType opr2 = muaExpression(null, true);
-                if (opr1 instanceof MuaNumber && opr2 instanceof MuaNumber)
-                    return new MuaBool(muaCompare(first, ((MuaNumber) opr1).getValue(), ((MuaNumber) opr2).getValue()));
+                if (muaIsnumber(opr1.toString()) && muaIsnumber(opr2.toString()))
+                    return new MuaBool(muaCompare(first, Double.parseDouble(opr1.toString()),
+                            Double.parseDouble(opr2.toString())));
                 else
                     return new MuaBool(muaCompare(first, opr1.toString(), opr2.toString()));
             }
@@ -203,12 +218,7 @@ public class Main {
             }
             case "isnumber": {
                 MuaType opr = muaExpression(null, true);
-                try {
-                    Double.parseDouble(opr.toString());
-                } catch (Exception e) {
-                    return new MuaBool(false);
-                }
-                return new MuaBool(true);
+                return new MuaBool(muaIsnumber(opr.toString()));
             }
             case "isword": {
                 MuaType opr = muaExpression(null, true);
@@ -225,7 +235,7 @@ public class Main {
             case "isempty": {
                 MuaType val = muaExpression(null, true);
                 if (val instanceof MuaList)
-                    return new MuaBool(((MuaList) val).getListType() == MuaList.ListType.MUA_EMPTY_LIST);
+                    return new MuaBool(((MuaList) val).getListType() == MUA_EMPTY_LIST);
                 if (val instanceof MuaWord)
                     return new MuaBool(((MuaWord) val).getValue().isEmpty());
                 return errorAndExit("Invalid operand for isempty.");
@@ -241,40 +251,70 @@ public class Main {
                     return errorAndExit("Invalid operands for " + first + ".");
                 }
             }
-            case "sentence": {
-                // TODO: sentence
-                break;
+            case "sentence": { // if an operand is a list, open it up
+                StringBuilder listContent = new StringBuilder("[");
+                for (int i = 0; i < 2; i++) {
+                    MuaType value = muaExpression(null, true);
+                    if (value instanceof MuaList)
+                        listContent.append(((MuaList) value).toStringForPrint());
+                    else
+                        listContent.append(value.toString());
+                    if (i == 0)
+                        listContent.append(" ");
+                }
+                listContent.append("]");
+                return new MuaList(listContent.toString());
             }
-            case "list": {
-                // TODO: list
-                break;
+            case "list": { // if an operand is a list, do not open it up
+                StringBuilder listContent = new StringBuilder("[");
+                for (int i = 0; i < 2; i++) {
+                    MuaType value = muaExpression(null, true);
+                    listContent.append(value.toString());
+                    if (i == 0)
+                        listContent.append(" ");
+                }
+                listContent.append("]");
+                return new MuaList(listContent.toString());
             }
             case "join": {
-                // TODO: join
-                break;
+                MuaType list  = muaExpression(null, true),
+                        value = muaExpression(null, true);
+                if (!(list instanceof MuaList))
+                    return errorAndExit("Operand 1 is not a list.");
+                if (((MuaList) list).getListType() != MUA_EMPTY_LIST)
+                    return new MuaList("[" + ((MuaList) list).toStringForPrint() +
+                        " " + value.toString() + "]");
+                else
+                    return new MuaList("[" + value.toString() + "]");
             }
-            case "butfirst":
-            case "butlast":
-            case "first":
+            case "butfirst":{
+                MuaType operand = muaExpression(null, true);
+                return muaFirst(operand, true);
+            }
+            case "first": {
+                MuaType operand = muaExpression(null, true);
+                return muaFirst(operand, false);
+            }
+            case "butlast":{
+                MuaType operand = muaExpression(null, true);
+                return muaLast(operand, true);
+            }
             case "last": {
-                // TODO 4
-                break;
+                MuaType operand = muaExpression(null, true);
+                return muaLast(operand, false);
             }
             case "readlist": {
-                // TODO 4
-                break;
-            }
-            case "poall": {
-                // TODO 4
-                break;
+                return muaReadList();
             }
             case "word": {
-                // TODO 4
-                break;
+                MuaType firstWord = muaExpression(null, true),
+                        secondWord = muaExpression(null, true);
+                return new MuaWord(firstWord.toString() + secondWord.toString());
             }
             case "save": {
-                // TODO 4
-                break;
+                MuaType fileName = muaExpression(null, true);
+                muaSave(fileName.toString());
+                return fileName;
             }
             // boolean literal
             case "true": {
@@ -307,7 +347,7 @@ public class Main {
                 else if (firstCh == '"') {    // <word>
                     return new MuaWord(first.substring(1));
                 }
-                else if (Character.isDigit(firstCh)) {    // <number>
+                else if (Character.isDigit(firstCh) || firstCh == '-') {    // <number>
                     try {
                         double number = Double.parseDouble(first);
                         return new MuaNumber(number);
@@ -330,8 +370,6 @@ public class Main {
                 }
             }
         }
-        // TODO 5: After finishing all cases, delete the following:
-        return errorAndExit("Not implemented yet.");
     }
 
     /**
@@ -373,6 +411,17 @@ public class Main {
         }
 
         func.setContext(symbolList);
+    }
+
+    @NotNull
+    private static MuaType muaReadList() {
+        // TODO f: read in run
+        String content;
+        if (scanner.hasNext())
+            content = scanner.nextLine();
+        else
+            return errorAndExit("Invalid input.");
+        return new MuaList("[" + content + "]");
     }
 
     /**
@@ -524,7 +573,7 @@ public class Main {
     }
 
     private static MuaType muaRemoveSymbol(String name) {
-        // TODO: confirm semantics
+        // TODO f: remove symbol for context
         MuaType result = null;
         if (localSymbolList != null)
             result = localSymbolList.remove(name);
@@ -542,6 +591,98 @@ public class Main {
 
         scanner = oldScanner;
         return result == null ? new MuaVoid() : result;
+    }
+
+    private static MuaType muaLoad(String fileName) {
+        File file = new File(fileName);
+        if (!file.canRead())
+            return errorAndExit("Open failed!");
+
+        Scanner oldScanner = scanner;
+
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            return errorAndExit(e.getMessage());
+        }
+
+        MuaType result;
+        result = muaProgram();
+
+        scanner = oldScanner;
+        return result == null ? new MuaVoid() : result;
+    }
+
+    private static void muaSave(String fileName) {
+        // TODO f: save for context
+        try {
+            PrintWriter os = new PrintWriter(fileName);
+            os.print(globalSymbolList.toString());
+            if (localSymbolList != null)
+                os.print(localSymbolList.toString());
+            os.close();
+        } catch (IOException e) {
+            errorAndExit(e.getMessage());
+        }
+    }
+
+    private static MuaType muaFirst(MuaType operand, boolean isBut) {
+        if (operand instanceof MuaList) {
+            Pattern pattern = Pattern.compile("\\s*(\\[.*])\\s*(.*)");
+            Matcher matcher = pattern.matcher(((MuaList) operand).toStringForPrint());
+            if (matcher.matches()) {
+                if (isBut)
+                    return new MuaList("[" + matcher.group(2) + "]");
+                else
+                    return new MuaList(matcher.group(1));
+            }
+            pattern = Pattern.compile("\\s*(\\S*)\\s*(.*)");
+            matcher = pattern.matcher(((MuaList) operand).toStringForPrint());
+            if (matcher.matches()) {
+                if (isBut)
+                    return new MuaList("[" + matcher.group(2) + "]");
+                else
+                    return new MuaWord(matcher.group(1));
+            }
+            return errorAndExit("Get first failed.");
+        }
+        else {
+            if (isBut)
+                return new MuaWord(operand.toString().substring(1));
+            else
+                return new MuaWord(operand.toString().substring(0, 1));
+        }
+    }
+
+    private static MuaType muaLast(MuaType operand, boolean isBut) {
+        if (operand instanceof MuaList) {
+            Pattern pattern = Pattern.compile("\\s*(.*)(\\[.*])");
+            Matcher matcher = pattern.matcher(((MuaList) operand).toStringForPrint());
+            if (matcher.matches()) {
+                if (isBut)
+                    return new MuaList("[" + matcher.group(1) + "]");
+                else
+                    return new MuaList(matcher.group(2));
+            }
+            String[] items = ((MuaList) operand).toStringForPrint().split(" ");
+            if (isBut) {
+                StringBuilder contents = new StringBuilder();
+                for (int i = 0; i < items.length - 1; i++) {
+                    contents.append(items[i]).append(" ");
+                }
+                contents.deleteCharAt(contents.length() - 1);
+                return new MuaList("[" + contents + "]");
+            }
+            else
+                return new MuaWord(items[items.length - 1]);
+        }
+        else {
+            int length = operand.toString().length();
+            if (isBut)
+                return new MuaWord(operand.toString().substring(0, length - 1));
+            else
+                return new MuaWord(operand.toString().substring(length - 1, length));
+        }
     }
 
     /**
@@ -575,6 +716,15 @@ public class Main {
         return null;
     }
 
+    private static boolean muaIsnumber(String str) {
+        try {
+            Double.parseDouble(str);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     @NotNull
     private static String getMuaListContent(MuaList val) {
         Pattern pattern = Pattern.compile("\\s*\\[(.*)]\\s*");
@@ -600,7 +750,6 @@ public class Main {
         if (func.getContext() != null)
             contextSymbolListStack.push(func.getContext());
 
-        // TODO [!]
         MuaType result = muaRun(func.getFunc_code());
 
         /*if (result instanceof MuaList

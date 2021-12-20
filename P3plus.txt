@@ -1,0 +1,30 @@
+make "church_test [
+    [n]
+    [
+        make "inc [[x] [___DEBUG___ return add :x 1]]
+        return n :inc 0
+    ]
+]
+
+make "O [
+    [f x]
+    [return :x]
+]
+
+make "succ [
+    [n]
+    [
+        make "t [
+            [f x]
+            [
+                make "tt n :f :x
+                return f :tt
+            ]
+        ]
+        return :t
+    ]
+]
+
+print church_test succ :O
+print church_test succ succ :O
+print church_test succ succ succ :O

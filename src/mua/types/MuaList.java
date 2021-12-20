@@ -63,6 +63,17 @@ public class MuaList extends MuaType {
         return value;
     }
 
+    public String toStringForPrint() {
+        Pattern pattern = Pattern.compile("\\s*\\[(.*)]\\s*");
+        Matcher matcher = pattern.matcher(value);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        }
+        else {
+            return errorAndExit("Runtime error: failed to get list content.").toString();
+        }
+    }
+
     @NotNull
     public MuaType makeCopy() {
         return new MuaList(value, listType, func_code, paramList, context);
